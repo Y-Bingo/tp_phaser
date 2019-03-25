@@ -1,3 +1,4 @@
+import Circle from "./Circle";
 import AlgoVisHelper from "./AlgoVisHelper";
 
 /**
@@ -18,18 +19,25 @@ class AlgoFrame extends Phaser.GameObjects.Graphics
     }
 
     // 接受渲染的数据
-    private _data: Object;
-    render ( data: Object ): void
+    private _circleArr: Circle[]
+    render ( data: Circle[] ): void
     {
-        this._data = data;
+        this._circleArr = data;
         this._repaint();
     }
 
     // 具体渲染过程
     private _repaint (): void
     {
-        // TODO: 绘制自己的数据data
-
+        AlgoVisHelper.setStrokeColor( this, 0x000ffe );
+        let circle = null;
+        for ( let i = 0; i < this._circleArr.length; i++ ) {
+            circle = this._circleArr[ i ];
+            if ( !circle.isFilled )
+                AlgoVisHelper.strokeCircle( this, circle.x, circle.y, circle.r );
+            else
+                AlgoVisHelper.fillCircle( this, circle.x, circle.y, circle.r );
+        }
     }
 }
 
