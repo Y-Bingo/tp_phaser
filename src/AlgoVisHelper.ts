@@ -52,35 +52,26 @@ export default class AlgoVisHelper
     // 空心圆
     static strokeCircle ( g2d: Phaser.GameObjects.Graphics, x: number, y: number, radius: number )
     {
-        g2d.save();
         g2d.lineStyle( this._lineWidth, this._lineColor );
         g2d.strokeCircle( x, y, radius );
-        g2d.restore();
     }
     // 实心圆
     static fillCircle ( g2d: Phaser.GameObjects.Graphics, x: number, y: number, radius: number )
     {
-        g2d.save();
         g2d.fillStyle( this._fillColor );
         g2d.fillCircle( x, y, radius );
-        g2d.restore();
 
     }
     // 空心矩形
     static strokeRect ( g2d: Phaser.GameObjects.Graphics, x: number, y: number, width: number, height: number )
     {
-        g2d.save();
         g2d.lineStyle( this._lineWidth, this._lineColor );
         g2d.strokeRect( x, y, width, height );
-        g2d.restore();
     }
     // 实心矩形
     static fillRect ( g2d: Phaser.GameObjects.Graphics, x: number, y: number, width: number, height: number )
     {
-        g2d.save();
-        g2d.lineStyle( this._lineWidth, this._lineColor );
+        g2d.fillStyle( this._fillColor );
         g2d.fillRect( x, y, width, height );
-        g2d.restore();
     }
-
 }
