@@ -18,18 +18,35 @@ class AlgoFrame extends Phaser.GameObjects.Graphics
     }
 
     // 接受渲染的数据
-    private _data: Object;
-    render ( data: Object ): void
+    private _money: number[];
+    render ( data: number[] ): void
     {
-        this._data = data;
+        this._money = data;
+        this.clear();
         this._repaint();
     }
 
     // 具体渲染过程
     private _repaint (): void
     {
-        // TODO: 绘制自己的数据data
+        let w = Math.floor( this._stageWidth / this._money.length );
+        let h = 0;
+        let x = 0;
+        let y = 0;
 
+        for ( let i = 0; i < this._money.length; i++ ) {
+            x = w * i + 20;
+            if ( this._money[ i ] < 0 ) {
+                AlgoVisHelper.setFillColor( this, AlgoVisHelper.Red );
+                h = -this._money[ i ];
+                y = this._stageHeight / 2;
+            } else {
+                AlgoVisHelper.setFillColor( this, AlgoVisHelper.Blue );
+                h = this._money[ i ];
+                y = this._stageHeight / 2 - h;
+            }
+            AlgoVisHelper.fillRect( this, x, y, w - 1, h );
+        }
     }
 }
 
