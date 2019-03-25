@@ -1,0 +1,24 @@
+@font-face {
+    font-family: "Connection";
+    src: url("../../assets/font/Connection.ttf") format("truetype")
+}
+
+body {
+    background: #000000;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    height: 100%;
+}
+
+body div#title {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* body div.title div#game {
+    margin: 0;
+    padding: 0
+} */
