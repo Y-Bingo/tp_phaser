@@ -1,5 +1,6 @@
 import AlgoVisHelper from "./AlgoVisHelper";
 import MazeData from "./MazeData";
+import { Step } from "./MazeData";
 
 /**
  * 视图层， 接收数据进行绘制
@@ -51,12 +52,18 @@ class AlgoFrame extends Phaser.GameObjects.Graphics
                 data = this._data.getMaze( row, col );
                 x = col * this._blockSize + this._startX;
                 y = row * this._blockSize + this._startY;
-
-                if ( data == MazeData.ROAD )
+                if ( this._data.isVisited( row, col ) )
+                    AlgoVisHelper.setFillColor( this, AlgoVisHelper.Orange );
+                else if ( data == MazeData.ROAD )
                     AlgoVisHelper.setFillColor( this, AlgoVisHelper.White );
                 else if ( data == MazeData.WALL )
                     AlgoVisHelper.setFillColor( this, AlgoVisHelper.Blue );
-                AlgoVisHelper.fillRect( this, x, y, this._blockSize, this._blockSize )
+                AlgoVisHelper.fillRect( this, x, y, this._blockSize, this._blockSize );
+
+                if ( this._data.getPath( row, col ) ) {
+                    AlgoVisHelper.setFillColor( this, AlgoVisHelper.Red );
+                    AlgoVisHelper.fillRect( this, x, y, this._blockSize, this._blockSize );
+                }
             }
         }
     }
