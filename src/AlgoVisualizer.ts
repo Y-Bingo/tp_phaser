@@ -25,20 +25,23 @@ class AlgoVisualizer extends Phaser.Scene
         // 初始化视图层
         this._algoFrame = new AlgoFrame( this );
 
-        this._go( this._mazeData.ENTRY_X, this._mazeData.ENTRY_Y );
+        this._next.push( [ this._mazeData.ENTRY_X, this._mazeData.ENTRY_Y ] );
     }
     /**
      * 走迷宫函数
      * @param row
      * @param y
      */
-    private _go ( row: number, col: number ): void
+    private _next: number[][] = [];         // 寻路栈
+    private _go (): void
     {
+        if ( !this._next.length ) return;
+        let [ row, col ] = this._next.pop();
         // 记录经过此点
         this._mazeData.visite( row, col );
         // 走出了迷宫
         if ( row == this._mazeData.EXIT_X && col == this._mazeData.EXIT_Y ) {
-            return
+            return;
         };
 
         let nextRow = 0;    // 下一步要走的x方向
@@ -52,10 +55,8 @@ class AlgoVisualizer extends Phaser.Scene
                 this._mazeData.isVisited( nextRow, nextCol ) ||
                 this._mazeData.getMaze( nextRow, nextCol ) == MazeData.WALL
             ) continue;
-            this._go( nextRow, nextCol );
+            this._next.push( [ nextRow, nextCol ] );
         }
-
-        return;
     }
 
     // 动画
@@ -63,6 +64,7 @@ class AlgoVisualizer extends Phaser.Scene
     {
         this._algoFrame.clear();
         this._algoFrame.render( this._mazeData );
+        this._go();
     }
 }
 export default AlgoVisualizer;

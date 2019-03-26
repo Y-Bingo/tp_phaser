@@ -71,15 +71,7 @@ export default class MazeData
     }
 
     // 是否经过某点
-    isVisited ( row: number, col: number ): boolean
-    {
-        return !!( this._visited[ row ][ col ] );
-    }
-
+    isVisited ( row: number, col: number ): boolean { return !!( this._visited[ row ][ col ] ); }
     // 经过某点
-    visite ( row: number, col: number ): void
-    {
-        // if ( !this.checkArea( row, col ) || !this.isVisited( row, col ) ) return;
-        this._visited[ row ][ col ] = 1;
-    }
+    visite ( row: number, col: number ): void { this._visited[ row ][ col ] = 1; }
 }
