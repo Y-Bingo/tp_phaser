@@ -51,7 +51,7 @@ class AlgoFrame extends Phaser.GameObjects.Graphics
                 data = this._data.getMaze( row, col );
                 x = col * this._blockSize + this._startX;
                 y = row * this._blockSize + this._startY;
-                if ( this._data.isVisited( row, col ) )
+                if ( this._data.getPath( row, col ) == 1 )
                     AlgoVisHelper.setFillColor( this, AlgoVisHelper.Orange );
                 else if ( data == MazeData.ROAD )
                     AlgoVisHelper.setFillColor( this, AlgoVisHelper.White );
