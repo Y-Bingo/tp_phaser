@@ -1,5 +1,6 @@
 import AlgoFrame from "./AlgoFrame";
 import MazeMap from "./MazeMap";
+import { RandomQueue } from "./RandomQueue";
 
 /**
  * 控制层
@@ -25,11 +26,11 @@ class AlgoVisualizer extends Phaser.Scene
         // // 递归建造调用
         // this._build( this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y + 1 );
 
-        this._next = [];
-        this._next.push( [ this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y + 1 ] );
+        this._next = new RandomQueue();
+        this._next.enqueue( [ this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y + 1 ] );
     }
 
-    private _next: number[][];
+    private _next: RandomQueue<number[]>;
     /**
      * ! 非递归遍历的一个注意点:
      * ? 什么时候去确定这个cell是被访问了
@@ -38,9 +39,11 @@ class AlgoVisualizer extends Phaser.Scene
      */
     private _build (): void
     {
-        if ( !this._next.length ) return;
+        if ( this._next.isEmpty() ) return;
 
-        let [ row, col ] = this._next.pop();
+        let [ row, col ] = this._next.dequeue();
+        // 除雾
+        this._mazeMap.demist( row, col );
 
         let nextRow = 0;
         let nextCol = 0;
@@ -53,9 +56,8 @@ class AlgoVisualizer extends Phaser.Scene
             if ( this._mazeMap.isLink( [ row, col ], [ nextRow, nextCol ] ) ) continue;
 
             this._mazeMap.linkCell( [ row, col ], [ nextRow, nextCol ] );
-            this._next.push( [ nextRow, nextCol ] );
+            this._next.enqueue( [ nextRow, nextCol ] );
         }
-
     }
 
     /**

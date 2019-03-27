@@ -25,6 +25,8 @@ export default class MazeMap
     private _exitY: number;         // 出口Y坐标
     private _cells: number[][];     // 空房记录
 
+    private _mist: boolean[][];      // 迷雾
+
     constructor ( row: number, col: number, [ entryX, entryY ]: number[], [ exitX, exitY ]: number[] )
     {
         this.ROW = row;
@@ -37,14 +39,19 @@ export default class MazeMap
         let rowArr = [];
         this._map = [];
         this._cells = [];
+        this._mist = [];
         for ( let row = 0; row < this._rows; row++ ) {
             rowArr = [];
+
+            this._mist[ row ] = [];
             this._cells[ row ] = [];
             for ( let col = 0; col < this._cols; col++ ) {
                 if ( row % 2 == 1 && col % 2 == 1 )
                     rowArr[ col ] = ROAD;
                 else
                     rowArr[ col ] = WALL;
+
+                this._mist[ row ][ col ] = false;
                 this._cells[ row ][ col ] = 1;
             }
             this._map[ row ] = rowArr.join( "" );
@@ -99,7 +106,21 @@ export default class MazeMap
         return true;
     }
 
-    // 链接两个控件
+    // 是否被迷雾覆盖
+    isCover ( row: number, col: number ): boolean { return this._mist[ row ][ col ] }
+    // 除雾
+    demist ( row: number, col: number ): void
+    {
+        for ( let x = row - 1; x <= row + 1; x++ ) {
+            for ( let y = col - 1; y <= col + 1; y++ ) {
+                if ( !this.checkArea( x, y ) ) continue;
+
+                this._mist[ x ][ y ] = true;
+            }
+        }
+    }
+
+    // 链接两个空间
     linkCell ( [ row, col ]: number[], [ nextRow, nextCol ]: number[] ): void
     {
         if ( !this.checkArea( row, col ) || !this.checkArea( nextRow, nextCol ) ) return;
@@ -117,7 +138,6 @@ export default class MazeMap
 
         let rowArr = this._map[ row ].split( "" );
         rowArr[ col ] = " ";
-
         this._map[ row ] = rowArr.join( "" );
     }
     // 是否打开的
