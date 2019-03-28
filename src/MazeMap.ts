@@ -1,19 +1,33 @@
-type TMazeData = {
-    map: string[],
-    row: number,
-    col: number,
-    entryX: number,
-    entryY: number,
-    exitX: number,
-    exitY: number
+export interface IMazeData
+{
+    MAP: string[];
+    ROW: number,
+    COL: number,
+    ENTRY_X: number,
+    ENTRY_Y: number,
+    EXIT_X: number,
+    EXIT_Y: number
 }
 export const ROAD: string = " ";      // 路标识
 export const WALL: string = "#";      // 墙标识
+// 遍历步骤
+export class Step
+{
+    row: number;
+    col: number;
+    pre: Step;
+    constructor ( row: number, col: number, pre?: Step )
+    {
+        this.row = row;
+        this.col = col;
+        this.pre = pre ? pre : null;
+    }
+}
 
 /**
  * 迷宫地图，负责生成迷宫
  */
-export default class MazeMap
+export default class MazeMap implements IMazeData
 {
     private _cols: number;          // 迷宫列数 默认5列
     private _rows: number;          // 迷宫行数 默认5行
@@ -25,7 +39,8 @@ export default class MazeMap
     private _exitY: number;         // 出口Y坐标
     private _cells: number[][];     // 空房记录
 
-    private _mist: boolean[][];      // 迷雾
+    private _mist: boolean[][];     // 迷雾
+    private _isOver: boolean;       // 是否建造完成
 
     constructor ( row: number, col: number, [ entryX, entryY ]: number[], [ exitX, exitY ]: number[] )
     {
@@ -35,6 +50,8 @@ export default class MazeMap
         this._entryY = entryY ? entryY : 0;
         this._exitX = exitX ? exitX : this._rows - 2;
         this._exitY = exitY ? exitY : this._cols - 1;
+
+        this._isOver = false;
 
         let rowArr = [];
         this._map = [];
@@ -85,8 +102,12 @@ export default class MazeMap
     get EXIT_Y (): number { return this._exitY; }
 
     // 获取地图
-    get MAP () { return this._map.join( "\n" ); }
+    get MAP () { return this._map; }
     get CELL () { return this._cells; }
+
+    // 是否建造完成
+    setOver ( isOver: boolean ): void { this._isOver = isOver; };
+    isOver (): boolean { return this._isOver; }
     // 获取迷宫信息
     getMaze ( row: number, col: number ): string
     {

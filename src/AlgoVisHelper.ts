@@ -21,9 +21,13 @@ export default class AlgoVisHelper
     public static Orange = ( 0xFF9800 );
     public static DeepOrange = ( 0xFF5722 );
     public static Brown = ( 0x795548 );
+    public static FloorBrown = ( 0x9e7644 );
+    public static Gray = ( 0xbdb8ae );
+    public static DarkGray = ( 0x8c8a84 );
     public static Grey = ( 0x9E9E9E );
     public static BlueGrey = ( 0x607D8B );
     public static Black = ( 0x000000 );
+    public static LightBlack = ( 0x262625 );
     public static White = ( 0xFFFFFF );
 
     private static _lineWidth: number = 1;
