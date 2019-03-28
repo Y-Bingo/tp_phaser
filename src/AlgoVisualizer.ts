@@ -1,4 +1,4 @@
-import MazePath from "./MazeData";
+import MazePath from "./MazePath";
 import MazeMap, { Step } from "./MazeMap";
 import { RandomQueue } from "./RandomQueue";
 import AlgoFrame from "./AlgoFrame";
@@ -14,12 +14,12 @@ class AlgoVisualizer extends Phaser.Scene
 
     private _isSolved: boolean;             // 迷宫是否有解
     // 方向
-    private _d: number[][] = [ [ -1, 0 ], [ 0, 1 ], [ 1, 0 ], [ 0, -1 ] ];
+    private _d: number[][] = [ [ -1, 0 ], [ 1, 0 ], [ 0, -1 ], [ 0, 1 ] ];
 
     preload (): void
     {
         // 初始化数据
-        this._mazeMap = new MazeMap( 101, 101, [], [] );
+        this._mazeMap = new MazeMap( 81, 81, [], [] );
         this._mazePath = new MazePath();
         this._nextBuild = new RandomQueue();
         this._nextPass = new RandomQueue();
@@ -36,8 +36,8 @@ class AlgoVisualizer extends Phaser.Scene
     {
         // // 递归建造调用
         // this._build( this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y + 1 );
-        this._nextBuild.enqueue( new Step( this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y + 1 ) );
-        this._nextPass.enqueue( new Step( this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y ) );
+        this._nextBuild.randomEnqueue( new Step( this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y + 1 ) );
+        this._nextPass.randomEnqueue( new Step( this._mazeMap.ENTRY_X, this._mazeMap.ENTRY_Y ) );
     }
 
     private _nextBuild: RandomQueue<Step>;
@@ -55,7 +55,7 @@ class AlgoVisualizer extends Phaser.Scene
             return;
         }
 
-        let step = this._nextBuild.RandomDequeue();
+        let step = this._nextBuild.randomDequeue();
         // 除雾
         this._mazeMap.demist( step.row, step.col );
 
@@ -70,7 +70,7 @@ class AlgoVisualizer extends Phaser.Scene
             if ( this._mazeMap.isLink( [ step.row, step.col ], [ nextRow, nextCol ] ) ) continue;
 
             this._mazeMap.linkCell( [ step.row, step.col ], [ nextRow, nextCol ] );
-            this._nextBuild.enqueue( new Step( nextRow, nextCol ) );
+            this._nextBuild.randomEnqueue( new Step( nextRow, nextCol ) );
         }
     }
 

@@ -1,6 +1,6 @@
 import AlgoVisHelper from "./AlgoVisHelper";
 import MazeMap, { ROAD, WALL, Step } from "./MazeMap";
-import MazePath from "./MazeData";
+import MazePath from "./MazePath";
 
 /**
  * 视图层， 接收数据进行绘制
@@ -66,7 +66,7 @@ class AlgoFrame extends Phaser.GameObjects.Graphics
                 x = col * this._blockSize + this._startX;
                 y = row * this._blockSize + this._startY;
                 if ( !this._mazeMap.isCover( row, col ) )
-                    AlgoVisHelper.setFillColor( this, AlgoVisHelper.DarkGray );
+                    AlgoVisHelper.setFillColor( this, AlgoVisHelper.Black );
                 else if ( mazeData == ROAD )
                     AlgoVisHelper.setFillColor( this, AlgoVisHelper.Gray );
                 else if ( mazeData == WALL )
@@ -95,6 +95,7 @@ class AlgoFrame extends Phaser.GameObjects.Graphics
                     AlgoVisHelper.setFillColor( this, AlgoVisHelper.Gray );
                 else if ( data == WALL )
                     AlgoVisHelper.setFillColor( this, AlgoVisHelper.LightBlack );
+
                 AlgoVisHelper.fillRect( this, x, y, this._blockSize, this._blockSize );
 
                 if ( this._mazePath.getPath( row, col ) ) {

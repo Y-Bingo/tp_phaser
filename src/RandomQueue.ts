@@ -13,23 +13,36 @@ export class RandomQueue<E> {
     isEmpty (): boolean { return !( this._queue.length ) }
 
     // 入队操作
-    enqueue ( ele: E ): void
+    randomEnqueue ( ele: E ): void
     {
-        this._queue.push( ele );
+        if ( Math.random() > 0.5 )
+            this._queue.push( ele );
+        else
+            this._queue.unshift( ele );
     }
 
     // 随机出队操作
-    RandomDequeue (): E
+    randomDequeue (): E
     {
         if ( this._queue.length == 0 ) return null;
         if ( this._queue.length == 1 ) return this.dequeue();
+        let temp = null;
+        // 随机从队列的前面或者后面取出
+        if ( Math.random() > 0.5 )
+            temp = this._queue.pop();
+        else
+            temp = this._queue.shift();
 
-        let randomIndex = Math.floor( Math.random() * this._queue.length );
-        let ele = this._queue[ randomIndex ];
-        // 把队列最后的元素置换到随机位置取出的元素
-        this._queue[ randomIndex ] = this._queue.pop();
+        // let randomIndex = Math.floor( Math.random() * this._queue.length );
+        // let ele = this._queue[ randomIndex ];
+        // this._queue[ randomIndex ] = temp;
         // return this._queue.shift();
-        return ele;
+        return temp;
+    }
+
+    enqueue ( ele: E )
+    {
+        this._queue.push( ele );
     }
 
     // 常规出队操作 = 出栈
