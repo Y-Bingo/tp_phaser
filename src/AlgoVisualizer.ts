@@ -1,40 +1,35 @@
 import AlgoFrame from "./AlgoFrame";
+import { SweeperData } from "./SweeperData";
 
 /**
  * 控制层
  */
 class AlgoVisualizer extends Phaser.Scene
 {
-    private _data: Object;                      // 数据层
-    private _algoFrame: AlgoFrame;              // 渲染层
-
-    private _isAmination: boolean;              // 是否播放动画
-
+    private _sweeperData: SweeperData;          // 数据层
+    private _algoFrame: AlgoFrame;              // 视图层
     preload (): void
     {
-        this._isAmination = true;
-        this._initModel();
-    }
-
-    // 初始化数据
-    private _initModel (): void
-    {
-        // TODO: 初始化数据
+        this.load.atlas( "sweeper", "resource/assest/sweeper.png", "resource/assest/sweeper.json" );
     }
     // 初始化视图
     create (): void
     {
+        this._sweeperData = new SweeperData( 10, 10, 10 );
         this._algoFrame = new AlgoFrame( this );
+
+        console.log( this._sweeperData );
+
+        this._algoFrame.setMap( this._sweeperData );
         this._inintKeyInput();
         this._initMouseInput();
     }
+
     // 动画
     update ()
     {
         this._algoFrame.clear();
-        this._algoFrame.render( this._data );
-        // TODO: 编写自己的动画逻辑
-
+        this._algoFrame.render( this._sweeperData );
     }
     // 键盘监听
     private _inintKeyInput (): void
