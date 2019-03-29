@@ -5,8 +5,9 @@ export class SweeperData
     private _mineNums: number;      // 地雷数
 
     private _map: boolean[][];      // 地雷分布
+    private _flag: boolean[][];     // 旗帜分布
+    private _nums: number[][];      // 周边地雷分布情况
     private _open: boolean[][];     // 打开情况
-    private _nums: number[][];      // 地雷分布情况
 
     constructor ( row: number, col: number, mineNums: number )
     {
@@ -15,14 +16,17 @@ export class SweeperData
         this._mineNums = mineNums;
 
         this._map = [];
+        this._flag = [];
         this._open = [];
         this._nums = [];
         for ( let row = 0; row < this._row; row++ ) {
             this._map[ row ] = [];
+            this._flag[ row ] = [];
             this._open[ row ] = [];
             this._nums[ row ] = [];
             for ( let col = 0; col < this._col; col++ ) {
                 this._map[ row ][ col ] = false;
+                this._flag[ row ][ col ] = false;
                 this._open[ row ][ col ] = false;
                 this._nums[ row ][ col ] = 0;
             }
@@ -101,10 +105,29 @@ export class SweeperData
     // 判断是否是雷
     isMine ( row: number, col: number ): boolean { return this.checkArea( row, col ) && this._map[ row ][ col ]; }
 
+    // 立flag
+    setFlag ( row: number, col: number ): void
+    {
+        if ( !this.checkArea( row, col ) ) return;
+        if ( this._open[ row ][ col ] ) return;
+
+        this._flag[ row ][ col ] = !this._flag[ row ][ col ];
+    }
+    // 是否立flag
+    isFlag ( row: number, col: number ): boolean { return this.checkArea( row, col ) && this._flag[ row ][ col ]; }
+
     // 是否开啊
     isOpen ( row: number, col: number ): boolean { return this.checkArea( row, col ) && this._open[ row ][ col ]; }
     // 打开某个格子
-    open ( row: number, col: number ): void { this.checkArea( row, col ) && ( this._open[ row ][ col ] = true ) }
+    open ( row: number, col: number ): void
+    {
+        // 越界不能打开
+        if ( !this.checkArea( row, col ) ) return;
+        // 有旗帜不能打开
+        if ( this._flag[ row ][ col ] ) return;
+
+        this._open[ row ][ col ] = true;
+    }
 
     // 获取具体区域的炸弹数
     getNums ( row: number, col: number ): number { return this._nums[ row ][ col ]; }

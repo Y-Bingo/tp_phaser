@@ -22,6 +22,14 @@ class AlgoFrame extends Phaser.GameObjects.RenderTexture
         this._data = data;
         this._initStage();
     }
+
+    transToIndex ( x: number, y: number ): { row: number, col: number }
+    {
+        let col = Math.floor( x / this._blockSize );
+        let row = Math.floor( y / this._blockSize );
+        return { row, col };
+    }
+
     private _blockSize = 32;
     private _startX: number;
     private _startY: number;
@@ -53,10 +61,14 @@ class AlgoFrame extends Phaser.GameObjects.RenderTexture
             for ( let col = 0; col < this._data.COL; col++ ) {
                 x = col * this._blockSize;
                 y = row * this._blockSize;
-                // if ( !this._data.isOpen( row, col ) )
-                //     this.drawFrame( "sweeper", "block.png", x, y );
-                // else
-                if ( this._data.isMine( row, col ) )
+                // 是否立旗了
+                if ( this._data.isFlag( row, col ) )
+                    this.drawFrame( "sweeper", "flag.png", x, y );
+                // 是否开了
+                else if ( !this._data.isOpen( row, col ) )
+                    this.drawFrame( "sweeper", "block.png", x, y );
+                // 是否有雷
+                else if ( this._data.isMine( row, col ) )
                     this.drawFrame( "sweeper", "mine.png", x, y );
                 else
                     this.drawFrame( "sweeper", this._data.getNums( row, col ) + ".png", x, y );

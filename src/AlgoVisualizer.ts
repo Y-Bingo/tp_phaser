@@ -21,7 +21,7 @@ class AlgoVisualizer extends Phaser.Scene
         console.log( this._sweeperData );
 
         this._algoFrame.setMap( this._sweeperData );
-        this._inintKeyInput();
+
         this._initMouseInput();
     }
 
@@ -31,15 +31,26 @@ class AlgoVisualizer extends Phaser.Scene
         this._algoFrame.clear();
         this._algoFrame.render( this._sweeperData );
     }
-    // 键盘监听
-    private _inintKeyInput (): void
-    {
-        // TODO: 根据情况加入键盘事件
-    }
     // 鼠标监听
     private _initMouseInput (): void
     {
-        // TODO: 根据情况加入鼠标事件
+        this.input.mouse.disableContextMenu();
+        this._algoFrame.setInteractive();
+        let row = 0;
+        let col = 0;
+        this._algoFrame.on( 'pointerdown', ( pointer, x, y ) =>
+        {
+            let pos = this._algoFrame.transToIndex( x, y );
+            // 右键
+            if ( pointer.rightButtonDown() ) {
+                this._sweeperData.setFlag( pos.row, pos.col );
+            }
+            // 左键
+            else {
+                this._sweeperData.open( pos.row, pos.col );
+            }
+
+        }, this );
     }
 }
 export default AlgoVisualizer;
