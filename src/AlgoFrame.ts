@@ -4,13 +4,13 @@ import Board from "./Board";
 // 地图数据颜色映射表
 const MBOX_COLOR =
 {
-    "A": AlgoVisHelper.Brown,
-    "B": AlgoVisHelper.LightBlue,
+    "A": AlgoVisHelper.Yellow,
+    "B": AlgoVisHelper.Green,
     "C": AlgoVisHelper.Grey,
-    "D": AlgoVisHelper.Pink,
-    "E": AlgoVisHelper.DeepOrange,
-    "F": AlgoVisHelper.DeepPurple,
-    "G": AlgoVisHelper.Red,
+    "D": AlgoVisHelper.DeepOrange,
+    "E": AlgoVisHelper.Red,
+    "F": AlgoVisHelper.Brown,
+    "G": AlgoVisHelper.Purple,
     "H": AlgoVisHelper.Cyan
 }
 

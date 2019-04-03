@@ -1,6 +1,7 @@
 import AlgoFrame from "./AlgoFrame";
 import Board from "./Board";
 
+let level = 16;
 /**
  * 控制层
  */
@@ -11,7 +12,7 @@ class AlgoVisualizer extends Phaser.Scene
 
     preload (): void
     {
-        this.load.json( "board", "resource/gameData/Level_8.json" );
+        this.load.json( "board", `resource/gameData/Level_${ level }.json` );
     }
 
     // 初始化视图
@@ -22,6 +23,8 @@ class AlgoVisualizer extends Phaser.Scene
 
         this._algoFrame = new AlgoFrame( this );
         this._algoFrame.setMap( this._data );
+
+        console.log( this._data.isResolve() );
     }
     // 动画
     update ()
