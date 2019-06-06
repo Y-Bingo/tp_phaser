@@ -50,8 +50,17 @@ class AlgoFrame extends Phaser.GameObjects.Graphics
         let num = 0;
         let x = 0;
         let y = 0;
-        AlgoVisHelper.setFillColor( this, AlgoVisHelper.Blue );
         for ( let index = 0; index < this._sortData.getN(); index++ ) {
+            if ( index < this._sortData.orderIndex )
+                AlgoVisHelper.setFillColor( this, AlgoVisHelper.Orange );
+            else
+                AlgoVisHelper.setFillColor( this, AlgoVisHelper.Grey );
+
+            if ( index === this._sortData.curMin )
+                AlgoVisHelper.setFillColor( this, AlgoVisHelper.Red );
+            if ( index === this._sortData.cur )
+                AlgoVisHelper.setFillColor( this, AlgoVisHelper.Blue );
+
             num = this._sortData.get( index );
             x = index * this._blockW + this._startX;
             y = this._stageHeight - num;
