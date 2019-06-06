@@ -1,18 +1,17 @@
 import AlgoFrame from "./AlgoFrame";
+import { SelectionData } from './SelectionData';
 
 /**
  * 控制层
  */
 class AlgoVisualizer extends Phaser.Scene
 {
-    private _data: Object;                      // 数据层
+    private _data: SelectionData;               // 数据层
     private _algoFrame: AlgoFrame;              // 渲染层
 
-    private _isAmination: boolean;              // 是否播放动画
 
     preload (): void
     {
-        this._isAmination = true;
         this._initModel();
     }
 
@@ -20,31 +19,55 @@ class AlgoVisualizer extends Phaser.Scene
     private _initModel (): void
     {
         // TODO: 初始化数据
+        this._data = new SelectionData( 100, 100, 500 );
     }
     // 初始化视图
     create (): void
     {
         this._algoFrame = new AlgoFrame( this );
-        this._inintKeyInput();
-        this._initMouseInput();
+        this._algoFrame.setSortData( this._data );
     }
     // 动画
+    private _frameTime: number = 400;
+    private _i = 0;
+    private _j = 0;
+    private _min = 0;
+    private _update (): void
+    {
+        let self = this;
+
+        self._algoFrame.clear();
+        self._algoFrame.render( self._data );
+
+        if ( self._i > self._data.getN() ) return;
+
+        self._min = self._i;
+        self._j = self._i + 1;
+
+        while ( self._j < self._data.getN() ) {
+            if ( self._data.get( self._j ) < self._data.get( self._min ) )
+                self._min = self._j;
+            self._j++;
+        }
+
+        self._data.swap( self._min, self._i );
+
+        self._i++;
+
+        self.sleep( self._frameTime );
+    }
+
+    sleep ( delay: number )
+    {
+        var start = ( new Date() ).getTime();
+        while ( ( new Date() ).getTime() - start < delay ) {
+            continue;
+        }
+    }
+
     update ()
     {
-        this._algoFrame.clear();
-        this._algoFrame.render( this._data );
-        // TODO: 编写自己的动画逻辑
-
-    }
-    // 键盘监听
-    private _inintKeyInput (): void
-    {
-        // TODO: 根据情况加入键盘事件
-    }
-    // 鼠标监听
-    private _initMouseInput (): void
-    {
-        // TODO: 根据情况加入鼠标事件
+        this._update();
     }
 }
 export default AlgoVisualizer;
